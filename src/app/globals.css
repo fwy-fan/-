@@ -1,0 +1,61 @@
+@import "tailwindcss";
+
+:root {
+  --background: #fbf7f4;
+  --surface: #ffffff;
+  --foreground: #2a1f24;
+  --muted: #6f6066;
+  --border: #eadfd9;
+  --accent: #8c2f4f;
+  --accent-soft: #f5e3e8;
+  --accent-contrast: #ffffff;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #17121a;
+    --surface: #211a24;
+    --foreground: #f3eaee;
+    --muted: #b3a3ab;
+    --border: #3a2f3d;
+    --accent: #e48aa9;
+    --accent-soft: #3b2230;
+    --accent-contrast: #1b1018;
+  }
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-contrast: var(--accent-contrast);
+  --font-sans: var(--font-geist-sans), "PingFang SC", "Microsoft YaHei", system-ui, sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+}
+
+@utility btn {
+  @apply inline-flex items-center justify-center gap-2 rounded-full px-5 py-2.5 text-sm font-medium transition disabled:cursor-not-allowed disabled:opacity-50;
+}
+@utility btn-primary {
+  @apply btn bg-accent text-accent-contrast hover:opacity-90;
+}
+@utility btn-ghost {
+  @apply btn border border-border bg-surface hover:bg-accent-soft;
+}
+.card {
+  @apply rounded-2xl border border-border bg-surface p-5;
+}
+.field {
+  @apply w-full rounded-xl border border-border bg-surface px-3 py-2 text-sm outline-none focus:border-accent;
+}
+.label {
+  @apply mb-1.5 block text-sm font-medium;
+}
