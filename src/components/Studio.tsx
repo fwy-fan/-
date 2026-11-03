@@ -283,8 +283,8 @@ export function Studio({
                 Monk {analysis.hand.monkSkinTone}
               </span>
               <span>{s.undertone}: {s.undertones[analysis.hand.undertone]}</span>
-              <span>{s.nailBed}: {analysis.hand.nailBedWidth} / {analysis.hand.nailBedLength}</span>
-              <span>{s.fingers}: {analysis.hand.fingerShape}</span>
+              <span>{s.nailBed}: {s.traits[analysis.hand.nailBedWidth]}{locale === "zh" ? "、" : " / "}{s.traits[analysis.hand.nailBedLength]}</span>
+              <span>{s.fingers}: {s.traits[analysis.hand.fingerShape]}</span>
             </div>
             <p className="text-sm text-muted">{analysis.hand.nailCondition}</p>
           </div>

@@ -50,6 +50,10 @@ const zh = {
     detectedTone: "识别肤色",
     undertone: "冷暖调",
     undertones: { cool: "冷调", warm: "暖调", neutral: "中性调", olive: "橄榄调" },
+    traits: {
+      narrow: "窄", average: "适中", wide: "宽", short: "短", long: "长",
+      slender: "纤细", broad: "宽厚",
+    } as Record<string, string>,
     nailBed: "甲床",
     fingers: "手指",
     recommendations: "为你推荐",
@@ -166,6 +170,10 @@ const en: Dict = {
     detectedTone: "Detected tone",
     undertone: "Undertone",
     undertones: { cool: "Cool", warm: "Warm", neutral: "Neutral", olive: "Olive" },
+    traits: {
+      narrow: "narrow", average: "average", wide: "wide", short: "short", long: "long",
+      slender: "slender", broad: "broad",
+    },
     nailBed: "Nail bed",
     fingers: "Fingers",
     recommendations: "Recommended for you",
