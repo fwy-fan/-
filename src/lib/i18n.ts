@@ -78,6 +78,7 @@ const zh = {
     cancelled: "支付已取消，未扣款。",
     secure: "支付由 Creem 安全处理（支持银行卡、Apple Pay、Google Pay 等），税费与发票由 Creem 作为商户代理处理。",
     free: (n: number) => `新用户注册即送 ${n} 点数`,
+    comingSoon: "在线支付即将开通，敬请期待。现在注册即可免费体验。",
   },
   account: {
     title: "我的账户",
@@ -113,10 +114,12 @@ const zh = {
     wrong_credentials: "邮箱或密码错误",
     invalid_credentials_format: "请输入有效邮箱，密码至少 8 位",
     checkout_failed: "无法创建支付，请稍后再试",
+    payments_unavailable: "在线支付即将开通",
     bad_request: "请求有误，请刷新后重试",
     generic: "出错了，请稍后再试",
   } as Record<string, string>,
   footer: "AI 生成效果仅供参考，实际效果以美甲师操作为准。",
+  legal: { terms: "服务条款", privacy: "隐私政策", refund: "退款政策", contact: "联系我们", updated: "最后更新" },
 };
 
 export type Dict = typeof zh;
@@ -198,6 +201,7 @@ const en: Dict = {
     cancelled: "Payment cancelled. You were not charged.",
     secure: "Payments are processed securely by Creem (cards, Apple Pay, Google Pay and more), which handles sales tax and invoices as merchant of record.",
     free: (n: number) => `New accounts get ${n} free credits`,
+    comingSoon: "Online payments are coming soon. Sign up now to try it for free.",
   },
   account: {
     title: "Your account",
@@ -233,10 +237,12 @@ const en: Dict = {
     wrong_credentials: "Wrong email or password",
     invalid_credentials_format: "Enter a valid email and a password of 8+ characters",
     checkout_failed: "Couldn't start checkout, please try again",
+    payments_unavailable: "Online payments are coming soon",
     bad_request: "Something was wrong with the request — please refresh and retry",
     generic: "Something went wrong, please try again",
   },
   footer: "AI renders are a preview; the final result depends on your nail technician.",
+  legal: { terms: "Terms of Service", privacy: "Privacy Policy", refund: "Refund Policy", contact: "Contact", updated: "Last updated" },
 };
 
 export const dictionaries: Record<Locale, Dict> = { zh, en };

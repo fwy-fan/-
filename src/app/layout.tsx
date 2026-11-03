@@ -4,6 +4,7 @@ import Link from "next/link";
 import "./globals.css";
 import { getDict } from "@/lib/locale";
 import { getCurrentUser } from "@/lib/auth";
+import { env } from "@/lib/env";
 import { LanguageSwitch } from "@/components/LanguageSwitch";
 import { LogoutButton } from "@/components/LogoutButton";
 
@@ -45,8 +46,16 @@ export default async function RootLayout({ children }: LayoutProps<"/">) {
           </nav>
         </header>
         <main className="mx-auto w-full max-w-6xl flex-1 px-4 py-8">{children}</main>
-        <footer className="border-t border-border px-4 py-6 text-center text-xs text-muted">
-          {t.footer}
+        <footer className="space-y-2 border-t border-border px-4 py-6 text-center text-xs text-muted">
+          <p className="flex flex-wrap justify-center gap-x-4 gap-y-1">
+            <Link href="/legal/terms" className="hover:text-accent">{t.legal.terms}</Link>
+            <Link href="/legal/privacy" className="hover:text-accent">{t.legal.privacy}</Link>
+            <Link href="/legal/refund" className="hover:text-accent">{t.legal.refund}</Link>
+            <a href={`mailto:${env.supportEmail}`} className="hover:text-accent">
+              {t.legal.contact}: {env.supportEmail}
+            </a>
+          </p>
+          <p>{t.footer}</p>
         </footer>
       </body>
     </html>

@@ -18,6 +18,9 @@ export default async function PricingPage(props: PageProps<"/pricing">) {
         <p className="text-sm text-muted">{t.pricing.costs(COSTS.analyze, COSTS.generate)}</p>
         {!user && <p className="text-sm font-medium text-accent">{t.pricing.free(env.freeCreditsOnSignup)}</p>}
       </div>
+      {!env.paymentsEnabled && (
+        <p className="card mx-auto max-w-md text-center text-sm font-medium">{t.pricing.comingSoon}</p>
+      )}
       {checkout === "cancelled" && (
         <p className="card mx-auto max-w-md text-center text-sm">{t.pricing.cancelled}</p>
       )}
@@ -34,7 +37,13 @@ export default async function PricingPage(props: PageProps<"/pricing">) {
             <p className="text-sm text-muted">
               {formatPrice(Math.round(pack.priceCents / pack.credits), locale)} / {locale === "zh" ? "点" : "credit"}
             </p>
-            <BuyButton packId={pack.id} locale={locale} loggedIn={!!user} highlight={pack.highlight} />
+            <BuyButton
+              packId={pack.id}
+              locale={locale}
+              loggedIn={!!user}
+              highlight={pack.highlight}
+              disabled={!env.paymentsEnabled}
+            />
           </div>
         ))}
       </div>

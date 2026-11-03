@@ -53,10 +53,12 @@ npm run dev
 
 ## 上线收费步骤
 
-1. **数据库**：在 [Neon](https://neon.tech) 或 Supabase 创建一个 Postgres 数据库，拿到 `DATABASE_URL`，然后运行 `npm run db:migrate`。
+1. **数据库**：在 [Neon](https://neon.tech) 创建一个 Postgres 数据库，拿到 `DATABASE_URL`。也可以在 Vercel 项目的 Storage 页面直接连接 Neon，Vercel 会自动填好 `DATABASE_URL`。
 2. **部署**：
-   - 推荐用 [Vercel](https://vercel.com)。导入本仓库，在 Environment Variables 里填入 `.env.example` 中的全部变量，`NEXT_PUBLIC_APP_URL` 填正式域名。
-   - 生成一张图可能需要 30–90 秒，`/api/generate` 设置了 `maxDuration = 300`。Vercel 要 Pro 套餐，单次请求才能超过 60 秒。
+   - 推荐用 [Vercel](https://vercel.com)。导入本仓库，在 Environment Variables 里填入 `.env.example` 中的变量，`NEXT_PUBLIC_APP_URL` 填正式域名。
+   - 每次部署都会运行 `vercel-build`，自动在数据库里建表或更新表结构，不用手动执行 `npm run db:migrate`。
+   - 还没开通 Creem 时，不填 `CREEM_*` 变量即可：价格页会显示"在线支付即将开通"，其他功能正常可用。
+   - 生成一张图可能需要 30–90 秒，`/api/generate` 设置了 `maxDuration = 300`。如果部署后生成时出现超时，请在 Vercel 项目设置里确认 Fluid Compute 已开启，并查看你的套餐允许的最长函数运行时间。
 3. **Creem**（个人身份即可开通）：
    1. 在 [creem.io](https://www.creem.io) 注册，创建商店（Store），按提示完成身份验证和收款账户设置。收款方式和支持的国家以 Creem 后台显示为准，开通前请确认你能收到款。
    2. 在后台 **Products** 新建一个商品，比如叫「美甲设计点数」：

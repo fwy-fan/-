@@ -41,6 +41,17 @@ export const env = {
   get creemProductId() {
     return required("CREEM_PRODUCT_ID");
   },
+  /** True once Creem is configured; until then the pricing page shows "coming soon". */
+  get paymentsEnabled() {
+    return Boolean(process.env.CREEM_API_KEY && process.env.CREEM_PRODUCT_ID);
+  },
+  get supportEmail() {
+    return process.env.SUPPORT_EMAIL || "support@example.com";
+  },
+  /** Your name or business name, shown in the terms of service. */
+  get operatorName() {
+    return process.env.OPERATOR_NAME || "the site operator";
+  },
   get creemTestMode() {
     return process.env.CREEM_TEST_MODE === "true";
   },

@@ -19,6 +19,7 @@ export async function POST(req: Request) {
   const parsed = bodySchema.safeParse(await req.json().catch(() => null));
   const pack = parsed.success ? findPack(parsed.data.packId) : undefined;
   if (!parsed.success || !pack) return fail("bad_request", 400);
+  if (!env.paymentsEnabled) return fail("payments_unavailable", 503);
 
   try {
     const checkout = await creem().checkouts.create({

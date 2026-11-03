@@ -9,11 +9,13 @@ export function BuyButton({
   locale,
   loggedIn,
   highlight,
+  disabled = false,
 }: {
   packId: string;
   locale: Locale;
   loggedIn: boolean;
   highlight: boolean;
+  disabled?: boolean;
 }) {
   const t = dictionaries[locale];
   const router = useRouter();
@@ -43,7 +45,7 @@ export function BuyButton({
 
   return (
     <div className="space-y-2">
-      <button type="button" onClick={buy} disabled={busy} className={`${highlight ? "btn-primary" : "btn-ghost"} w-full`}>
+      <button type="button" onClick={buy} disabled={busy || disabled} className={`${highlight ? "btn-primary" : "btn-ghost"} w-full`}>
         {t.pricing.buy}
       </button>
       {error && <p className="text-sm text-red-600">{error}</p>}
