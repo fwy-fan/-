@@ -31,11 +31,18 @@ export const env = {
       | "medium"
       | "high";
   },
-  get stripeSecretKey() {
-    return required("STRIPE_SECRET_KEY");
+  get creemApiKey() {
+    return required("CREEM_API_KEY");
   },
-  get stripeWebhookSecret() {
-    return required("STRIPE_WEBHOOK_SECRET");
+  get creemWebhookSecret() {
+    return required("CREEM_WEBHOOK_SECRET");
+  },
+  /** The one-time-payment product every credit pack is sold through. */
+  get creemProductId() {
+    return required("CREEM_PRODUCT_ID");
+  },
+  get creemTestMode() {
+    return process.env.CREEM_TEST_MODE === "true";
   },
   get appUrl() {
     return (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").replace(

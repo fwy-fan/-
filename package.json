@@ -14,6 +14,7 @@
   "dependencies": {
     "@anthropic-ai/sdk": "^1.4.0",
     "bcryptjs": "^3.0.3",
+    "creem": "1.13.0",
     "drizzle-orm": "^0.45.4",
     "jose": "^6.2.15",
     "next": "16.4.4",
@@ -23,7 +24,6 @@
     "react-dom": "19.3.0",
     "server-only": "^0.0.1",
     "sharp": "^0.35.5",
-    "stripe": "^23.1.0",
     "zod": "^4.6.7"
   },
   "devDependencies": {

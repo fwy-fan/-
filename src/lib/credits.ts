@@ -51,8 +51,7 @@ export async function refundCredits(
 }
 
 /**
- * Adds purchased credits exactly once per `ref` (the Stripe Checkout Session
- * id). Returns false when this ref was already granted.
+ * Adds purchased credits exactly once per `ref` (the Creem checkout id). Returns false when this ref was already granted.
  */
 export async function grantPurchasedCredits(opts: {
   userId: string;

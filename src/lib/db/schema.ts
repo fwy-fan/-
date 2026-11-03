@@ -20,7 +20,6 @@ export const users = pgTable("users", {
   email: text("email").notNull().unique(),
   passwordHash: text("password_hash").notNull(),
   credits: integer("credits").notNull().default(0),
-  stripeCustomerId: text("stripe_customer_id"),
   createdAt: timestamp("created_at", { withTimezone: true })
     .notNull()
     .defaultNow(),
@@ -28,8 +27,8 @@ export const users = pgTable("users", {
 
 /**
  * Every change to a user's credit balance is recorded here. `ref` is unique, so
- * a Stripe Checkout Session id can only ever grant credits once, even if Stripe
- * delivers the webhook several times.
+ * a Creem checkout id can only ever grant credits once, even if Creem delivers
+ * the webhook several times.
  */
 export const creditLedger = pgTable(
   "credit_ledger",

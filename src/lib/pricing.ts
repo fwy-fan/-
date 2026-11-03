@@ -1,7 +1,10 @@
 /**
- * Credit packs sold through Stripe Checkout. Prices are in the smallest
- * currency unit (cents). Change them here; Checkout uses these values
- * directly, so no products need to be created in the Stripe dashboard.
+ * Credit packs sold through Creem. Prices are in cents. Every pack is sold
+ * through the single Creem product in CREEM_PRODUCT_ID, with the pack price
+ * passed as `custom_price` at checkout, so change prices here only.
+ *
+ * CURRENCY is only used for display: Creem charges in the currency set on
+ * that product in the Creem dashboard, so keep the two the same.
  */
 export const CURRENCY = "usd";
 

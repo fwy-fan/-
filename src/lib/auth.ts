@@ -58,7 +58,7 @@ export async function getCurrentUser() {
   if (!id) return null;
   const user = await db.query.users.findFirst({
     where: eq(schema.users.id, id),
-    columns: { id: true, email: true, credits: true, stripeCustomerId: true },
+    columns: { id: true, email: true, credits: true },
   });
   return user ?? null;
 }

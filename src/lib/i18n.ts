@@ -76,7 +76,7 @@ const zh = {
     popular: "最受欢迎",
     packCredits: (n: number) => `${n} 点数`,
     cancelled: "支付已取消，未扣款。",
-    secure: "由 Stripe 安全处理支付，支持银行卡、Apple Pay、Google Pay 等。",
+    secure: "支付由 Creem 安全处理（支持银行卡、Apple Pay、Google Pay 等），税费与发票由 Creem 作为商户代理处理。",
     free: (n: number) => `新用户注册即送 ${n} 点数`,
   },
   account: {
@@ -196,7 +196,7 @@ const en: Dict = {
     popular: "Most popular",
     packCredits: (n: number) => `${n} credits`,
     cancelled: "Payment cancelled. You were not charged.",
-    secure: "Payments are processed securely by Stripe — cards, Apple Pay, Google Pay and more.",
+    secure: "Payments are processed securely by Creem (cards, Apple Pay, Google Pay and more), which handles sales tax and invoices as merchant of record.",
     free: (n: number) => `New accounts get ${n} free credits`,
   },
   account: {
