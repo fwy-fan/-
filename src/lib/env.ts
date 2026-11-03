@@ -57,10 +57,13 @@ export const env = {
     return process.env.CREEM_TEST_MODE === "true";
   },
   get appUrl() {
-    return (process.env.NEXT_PUBLIC_APP_URL || "http://localhost:3000").replace(
-      /\/$/,
-      "",
-    );
+    // On Vercel, fall back to the project's production domain, which Vercel
+    // provides automatically, so NEXT_PUBLIC_APP_URL is optional there.
+    const vercel = process.env.VERCEL_PROJECT_PRODUCTION_URL;
+    const url =
+      process.env.NEXT_PUBLIC_APP_URL ||
+      (vercel ? `https://${vercel}` : "http://localhost:3000");
+    return url.replace(/\/$/, "");
   },
   get freeCreditsOnSignup() {
     const n = Number(process.env.FREE_CREDITS_ON_SIGNUP ?? "3");
