@@ -19,8 +19,9 @@ export const env = {
     }
     return new TextEncoder().encode(secret);
   },
-  get anthropicModel() {
-    return process.env.ANTHROPIC_MODEL || "claude-opus-5-5";
+  /** Model that looks at the hand photo and writes the designs. */
+  get openaiModel() {
+    return process.env.OPENAI_MODEL || "gpt-5.5";
   },
   get openaiImageModel() {
     return process.env.OPENAI_IMAGE_MODEL || "gpt-image-2";

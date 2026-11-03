@@ -3,7 +3,7 @@ import { db, schema } from "@/lib/db";
 import { getCurrentUser } from "@/lib/auth";
 import { COSTS, InsufficientCreditsError, refundCredits, spendCredits } from "@/lib/credits";
 import { BadImageError, preparePhoto } from "@/lib/image";
-import { AiRefusalError, designFromDescription, designSchema, type Design } from "@/lib/ai/claude";
+import { AiRefusalError, designFromDescription, designSchema, type Design } from "@/lib/ai/analysis";
 import { ImageModelRejectedError, paintNails } from "@/lib/ai/image-model";
 import { preferencesSchema } from "@/lib/styles";
 import { fail, parsePreferencesField } from "@/lib/http/respond";

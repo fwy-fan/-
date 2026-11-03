@@ -11,7 +11,7 @@ import {
   STYLE_DIRECTIONS,
   type Preferences,
 } from "@/lib/styles";
-import type { Design, HandAnalysis } from "@/lib/ai/claude";
+import type { Design, HandAnalysis } from "@/lib/ai/analysis";
 
 interface Render {
   id: string;

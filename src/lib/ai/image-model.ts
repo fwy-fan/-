@@ -3,9 +3,9 @@ import OpenAI, { toFile } from "openai";
 import { env } from "@/lib/env";
 
 /**
- * Nail try-on images come from an image-editing model (Claude reads images
- * but does not generate them). This file is the only place that talks to the
- * image provider, so it can be swapped without touching the rest of the app.
+ * Nail try-on images come from OpenAI's image-editing model. This file is
+ * the only place that generates images, so the image provider can be swapped
+ * without touching the rest of the app.
  */
 let _openai: OpenAI | null = null;
 function openai() {

@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { getCurrentUser } from "@/lib/auth";
 import { COSTS, InsufficientCreditsError, refundCredits, spendCredits } from "@/lib/credits";
 import { BadImageError, preparePhoto } from "@/lib/image";
-import { AiRefusalError, analyzeHand } from "@/lib/ai/claude";
+import { AiRefusalError, analyzeHand } from "@/lib/ai/analysis";
 import { preferencesSchema } from "@/lib/styles";
 import { fail, parsePreferencesField } from "@/lib/http/respond";
 

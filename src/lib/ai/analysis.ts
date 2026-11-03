@@ -1,25 +1,15 @@
 import "server-only";
-import Anthropic from "@anthropic-ai/sdk";
-import { betaZodOutputFormat } from "@anthropic-ai/sdk/helpers/beta/zod";
+import OpenAI from "openai";
+import { zodTextFormat } from "openai/helpers/zod";
+import type { ResponseInputItem } from "openai/resources/responses/responses";
 import { z } from "zod";
 import { env } from "@/lib/env";
 import { describePreferences, type Preferences } from "@/lib/styles";
 
-let _client: Anthropic | null = null;
-function anthropic() {
+let _openai: OpenAI | null = null;
+function openai() {
   // Created lazily so builds succeed without API keys present.
-  return (_client ??= new Anthropic());
-}
-
-/**
- * Server-side fallback: if a safety classifier declines a request, the API
- * retries it on Anthropic's recommended fallback model inside the same call.
- */
-function fallback() {
-  return {
-    betas: ["server-side-fallback-2026-07-01"],
-    fallbacks: "default" as const,
-  };
+  return (_openai ??= new OpenAI());
 }
 
 export class AiRefusalError extends Error {}
@@ -106,6 +96,31 @@ imagePrompt rules (it goes to an image-editing model together with the customer'
 - End with: "Keep the hand, fingers, skin tone, skin texture, pose, jewellery, lighting and background exactly as in the original photo. Only the nails change. Photorealistic salon result."
 - No text, watermarks or extra hands.`;
 
+/** One user turn holding the hand photo followed by the text request. */
+function userInput(photoJpeg: Buffer, text: string): ResponseInputItem[] {
+  return [
+    {
+      role: "user",
+      content: [
+        {
+          type: "input_image",
+          detail: "high",
+          image_url: `data:image/jpeg;base64,${photoJpeg.toString("base64")}`,
+        },
+        { type: "input_text", text },
+      ],
+    },
+  ];
+}
+
+/** True when the model declined instead of answering. */
+function refused(output: OpenAI.Responses.ResponseOutputItem[]) {
+  return output.some(
+    (item) =>
+      item.type === "message" && item.content.some((c) => c.type === "refusal"),
+  );
+}
+
 function localeName(locale: Preferences["locale"]) {
   return locale === "zh" ? "Simplified Chinese" : "English";
 }
@@ -124,40 +139,21 @@ export async function analyzeHand(opts: {
     "Analyse the hand in the photo and give exactly 4 recommendations.",
   ].join("\n\n");
 
-  const response = await anthropic().beta.messages.parse({
-    model: env.anthropicModel,
-    max_tokens: 16000,
-    ...fallback(),
-    output_config: {
-      effort: "medium",
-      format: betaZodOutputFormat(analysisSchema),
-    },
-    system: ANALYSIS_SYSTEM,
-    messages: [
-      {
-        role: "user",
-        content: [
-          {
-            type: "image",
-            source: {
-              type: "base64",
-              media_type: "image/jpeg",
-              data: opts.photoJpeg.toString("base64"),
-            },
-          },
-          { type: "text", text: userText },
-        ],
-      },
-    ],
+  const response = await openai().responses.parse({
+    model: env.openaiModel,
+    reasoning: { effort: "medium" },
+    instructions: ANALYSIS_SYSTEM,
+    input: userInput(opts.photoJpeg, userText),
+    text: { format: zodTextFormat(analysisSchema, "hand_analysis") },
   });
 
-  if (response.stop_reason === "refusal") {
-    throw new AiRefusalError("analysis_refused");
+  if (refused(response.output)) throw new AiRefusalError("analysis_refused");
+  if (!response.output_parsed) {
+    throw new Error(`analysis_unparsed (status=${response.status})`);
   }
-  if (!response.parsed_output) {
-    throw new Error(`analysis_unparsed (stop_reason=${response.stop_reason})`);
-  }
-  const result = response.parsed_output;
+  // The SDK has already validated this against the schema; re-parsing gives
+  // TypeScript the concrete type, which the SDK's inference loses here.
+  const result = analysisSchema.parse(response.output_parsed);
   result.hand.monkSkinTone = Math.min(10, Math.max(1, result.hand.monkSkinTone));
   result.recommendations = result.recommendations.slice(0, 4);
   return result;
@@ -191,45 +187,26 @@ export async function designFromDescription(opts: {
   prefs: Preferences;
   description: string;
 }): Promise<{ design: Design } | { problem: string }> {
-  const response = await anthropic().beta.messages.parse({
-    model: env.anthropicModel,
-    max_tokens: 8000,
-    ...fallback(),
-    output_config: {
-      effort: "low",
-      format: betaZodOutputFormat(customDesignSchema),
-    },
-    system: CUSTOM_SYSTEM,
-    messages: [
-      {
-        role: "user",
-        content: [
-          {
-            type: "image",
-            source: {
-              type: "base64",
-              media_type: "image/jpeg",
-              data: opts.photoJpeg.toString("base64"),
-            },
-          },
-          {
-            type: "text",
-            text: [
-              `Customer's language: ${localeName(opts.prefs.locale)}.`,
-              describePreferences(opts.prefs),
-              `The customer wants:\n<wishes>\n${opts.description}\n</wishes>`,
-            ].join("\n\n"),
-          },
-        ],
-      },
-    ],
+  const response = await openai().responses.parse({
+    model: env.openaiModel,
+    reasoning: { effort: "low" },
+    instructions: CUSTOM_SYSTEM,
+    input: userInput(
+      opts.photoJpeg,
+      [
+        `Customer's language: ${localeName(opts.prefs.locale)}.`,
+        describePreferences(opts.prefs),
+        `The customer wants:\n<wishes>\n${opts.description}\n</wishes>`,
+      ].join("\n\n"),
+    ),
+    text: { format: zodTextFormat(customDesignSchema, "custom_design") },
   });
 
-  if (response.stop_reason === "refusal") {
-    throw new AiRefusalError("design_refused");
+  if (refused(response.output)) throw new AiRefusalError("design_refused");
+  if (!response.output_parsed) {
+    throw new Error(`design_unparsed (status=${response.status})`);
   }
-  const out = response.parsed_output;
-  if (!out) throw new Error(`design_unparsed (stop_reason=${response.stop_reason})`);
+  const out = customDesignSchema.parse(response.output_parsed);
   if (!out.feasible) return { problem: out.problem ?? "" };
   return { design: out.design };
 }

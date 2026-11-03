@@ -7,7 +7,7 @@ const ALLOWED = new Set(["image/jpeg", "image/png", "image/webp", "image/heic", 
 export class BadImageError extends Error {}
 
 export interface PreparedPhoto {
-  /** JPEG, longest side ≤ 1568px — the size Claude reads best. */
+  /** JPEG, longest side ≤ 1568px — sent to the vision model. */
   forVision: Buffer;
   /** PNG, longest side ≤ 1536px — sent to the image model as the edit source. */
   forEdit: Buffer;

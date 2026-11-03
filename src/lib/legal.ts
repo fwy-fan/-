@@ -59,7 +59,7 @@ export function legalContent(doc: LegalDoc, locale: Locale, c: Ctx): LegalPage {
           title: "隐私政策",
           sections: [
             { h: "我们收集的信息", p: ["账户信息：邮箱和加密存储的密码（我们无法看到你的明文密码）。", "使用记录：点数余额、购买与消费记录。", "你生成的效果图，以及生成时使用的设计描述，保存在你的账户中，方便你随时查看。"] },
-            { h: "手部照片", p: ["你上传的原始手部照片只在本次请求中使用，不会被保存。上传时我们会去除照片中的 EXIF 信息（包括 GPS 位置）。", "为完成分析和生成，照片会发送给我们的 AI 服务提供商 Anthropic（Claude）和 OpenAI 处理。根据它们的 API 政策，这些数据不会被用于训练模型。"] },
+            { h: "手部照片", p: ["你上传的原始手部照片只在本次请求中使用，不会被保存。上传时我们会去除照片中的 EXIF 信息（包括 GPS 位置）。", "为完成分析和生成，照片会发送给我们的 AI 服务提供商 OpenAI 处理。根据其 API 政策，这些数据不会被用于训练模型。"] },
             { h: "肤色与敏感信息", p: ["AI 会根据照片估计肤色深浅和冷暖调，仅用于推荐配色。我们不会推测或记录你的种族、民族或国籍。"] },
             { h: "付款信息", p: ["付款由 Creem 处理。我们只会收到订单金额、币种和付款状态，不会接触你的银行卡信息。"] },
             { h: "Cookie", p: ["我们只使用必要的 Cookie：登录状态和语言偏好。不使用广告或第三方追踪 Cookie。"] },
@@ -72,7 +72,7 @@ export function legalContent(doc: LegalDoc, locale: Locale, c: Ctx): LegalPage {
           title: "Privacy Policy",
           sections: [
             { h: "What we collect", p: ["Account data: your email address and a hashed password (we can never see your password).", "Usage records: your credit balance, purchases and credit spending.", "The images you generate and the design descriptions used to make them, stored in your account so you can view them later."] },
-            { h: "Hand photos", p: ["The original hand photo you upload is used only for that request and is never stored. We strip EXIF metadata, including GPS location, on upload.", "To analyse and render, the photo is sent to our AI providers Anthropic (Claude) and OpenAI. Under their API policies this data is not used to train their models."] },
+            { h: "Hand photos", p: ["The original hand photo you upload is used only for that request and is never stored. We strip EXIF metadata, including GPS location, on upload.", "To analyse and render, the photo is sent to our AI provider OpenAI. Under its API policies this data is not used to train their models."] },
             { h: "Skin tone and sensitive data", p: ["The AI estimates skin depth and undertone from the photo solely to recommend colours. We never infer or record your race, ethnicity or nationality."] },
             { h: "Payment data", p: ["Payments are handled by Creem. We only receive the order amount, currency and payment status, never your card details."] },
             { h: "Cookies", p: ["We only use essential cookies: your login session and language preference. No advertising or third-party tracking cookies."] },

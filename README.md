@@ -9,10 +9,10 @@
 
 ## 功能
 
-- **AI 手部分析与推荐**（1 点）：用 Claude 分析照片，返回：
+- **AI 手部分析与推荐**（1 点）：用 OpenAI 的视觉模型分析照片，返回：
   - 肤色深浅、冷暖调、甲床、指形和指甲状况
   - 4 款不同方向的推荐，每款附配色色值、适合的原因、甲型、质感和维护难度
-- **效果图生成**（2 点/张）：可以直接生成推荐款，也可以按顾客自己的描述生成。按描述生成时，Claude 先把描述变成精确的设计，再交给图像模型，在原照片上只改指甲。
+- **效果图生成**（2 点/张）：可以直接生成推荐款，也可以按顾客自己的描述生成。按描述生成时，AI 先把描述变成精确的设计，再交给图像模型，在原照片上只改指甲。
 - **包容性设计**：
   - 配色建议只看照片里能看到的肤色深浅和冷暖调，**不推测种族或民族**；顾客可以手动校正肤色。
   - 男士美甲有一套单独的设计规则（干净的短甲、哑光护甲、深色纯色、极简线条等）。
@@ -27,11 +27,11 @@
 
 ## 技术栈
 
-Next.js 16（App Router）· TypeScript · Tailwind CSS 4 · PostgreSQL + Drizzle ORM · Claude API（`@anthropic-ai/sdk`）· OpenAI 图像编辑模型 · Creem
+Next.js 16（App Router）· TypeScript · Tailwind CSS 4 · PostgreSQL + Drizzle ORM · OpenAI API（看图分析 + 图像编辑，只需一个密钥）· Creem
 
 | 文件 | 作用 |
 | --- | --- |
-| `src/lib/ai/claude.ts` | Claude 手部分析、推荐、把描述变成设计 |
+| `src/lib/ai/analysis.ts` | AI 手部分析、推荐、把描述变成设计 |
 | `src/lib/ai/image-model.ts` | 调用图像模型生成效果图（要换供应商只需改这个文件） |
 | `src/lib/styles.ts` | 风格方向、地区审美、Monk 肤色量表 |
 | `src/lib/pricing.ts` | 点数包价格（调价直接改这里） |
@@ -69,11 +69,11 @@ npm run dev
    3. 在 **Developers** 页面复制 API Key，填入 `CREEM_API_KEY`。
    4. 在 **Developers → Webhooks** 添加 `https://你的域名/api/webhooks/creem`，至少勾选 `checkout.completed` 事件，把签名密钥填入 `CREEM_WEBHOOK_SECRET`。
    5. 先用**测试模式**（后台右上角切换 Test Mode）的密钥，并设置 `CREEM_TEST_MODE=true`，跑通一次付款。正式上线时，换成正式模式的 API Key、商品 ID 和 Webhook 密钥，并把 `CREEM_TEST_MODE` 删掉或设为 `false`。测试模式和正式模式的商品、密钥互不通用。
-4. **API 密钥**：在 Anthropic Console 和 OpenAI 平台分别创建密钥并充值。
+4. **API 密钥**：只需要一个 OpenAI 密钥。在 [OpenAI 平台](https://platform.openai.com/api-keys) 创建密钥并充值，然后完成组织验证（Settings → Organization → Verify），否则图片生成会被拒绝。
 
 ## 成本与定价参考
 
-- 每次 AI 分析大约花几美分（Claude）。
+- 每次 AI 分析大约花几美分。
 - 每张效果图约 $0.05–0.25，具体取决于 `OPENAI_IMAGE_QUALITY`。
 - 默认售价约 $0.30–0.50/点：分析 1 点，效果图 2 点，留有利润空间。
 
