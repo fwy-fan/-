@@ -1,12 +1,12 @@
 import "server-only";
-import { cookies, headers } from "next/headers";
+import { cookies } from "next/headers";
 import { dictionaries, isLocale, type Locale } from "@/lib/i18n";
 
 export async function getLocale(): Promise<Locale> {
   const fromCookie = (await cookies()).get("lang")?.value;
   if (isLocale(fromCookie)) return fromCookie;
-  const accept = (await headers()).get("accept-language") ?? "";
-  return /^zh|,\s*zh/i.test(accept) ? "zh" : "en";
+  // English by default; Chinese only when the visitor picks it in the switcher.
+  return "en";
 }
 
 export async function getDict() {
